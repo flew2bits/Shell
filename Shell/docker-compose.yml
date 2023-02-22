@@ -1,0 +1,21 @@
+﻿services:
+  shell:
+    depends_on:
+      - postgres
+    image: flew2bits/shell:latest
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - c:\temp\shell:/var/data
+    environment:
+      ASPNETCORE_URLS: http://+;https://+
+      ConnectionStrings__Marten: "User ID=postgres;Host=postgres;Port=5432;Database=postgres"
+      Kestrel__Certificates__Default__Path: "/var/data/localhost.pfx"
+      Kestrel__Certificates__Default__Password: "SECURE"
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - c:\temp\shell\postgres:/var/lib/postgresql/data
