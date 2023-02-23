@@ -75,7 +75,7 @@ the same, but you'll have to make use of a different Saver and
 Loader.
 
 ### WidgetCommandHandler.cs
-This is the **Imperative Shell** part of the Widget entity. It extends
+This is the *Imperative Shell* part of the Widget entity. It extends
 the `EntityCommandHandler` abstract class, simply passing in 
 the Decider from WidgetDecider.cs; and the Loader and Saver, both from WidgetData.cs.
 This entity does not use an Archiver.
@@ -118,5 +118,5 @@ definition and the current state of the entity, producing a stream
 of events. Those events are then folded into the current state using
 the evolver, returning a new state.
 
-This class represents the **Functional Core** of the entity. All of the
+This class represents the *Functional Core* of the entity. All of the
 methods defined here are Pure functions.
