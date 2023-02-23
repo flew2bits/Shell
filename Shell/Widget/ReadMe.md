@@ -76,7 +76,7 @@ Loader.
 
 ### WidgetCommandHandler.cs
 This is the "Imperative Shell" part of the widget. It extends
-the EntityCommandHandler abstract class, simply passing in 
+the `EntityCommandHandler` abstract class, simply passing in 
 the Decider from WidgetDecider.cs; and the Loader and Saver, both from WidgetData.cs.
 This entity does not use an Archiver.
 
