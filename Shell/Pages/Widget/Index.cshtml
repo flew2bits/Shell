@@ -30,7 +30,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Add a Widget</h3>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
@@ -57,7 +57,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Sell Widgets - <span id="SellWidgetsName">WIDGET NAME</span></h3>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
@@ -81,7 +81,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Buy Widgets - <span id="BuyWidgetsName">WIDGET NAME</span></h3>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
@@ -92,6 +92,62 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Buy</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form method="post" asp-page-handler="ReserveWidgets">
+    <div class="modal fade" id="ReserveWidgetsModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Reserve Widgets - <span id="ReserveWidgetsName">WIDGET NAME</span></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label asp-for="ReserveWidgets.Reserve" class="form-label">How many widgets are you reserving?</label>
+                        <input type="number" asp-for="ReserveWidgets.Reserve" min="0" class="form-control"/>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="ReserveWidgets.ReservedFor" class="form-label">Who are these being reserved for?</label>
+                        <input type="text" asp-for="ReserveWidgets.ReservedFor" class="form-control"/>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="ReserveWidgets.ReservationId"class="form-label">Provide a unique identifier for this reservation</label>
+                        <input type="text" asp-for="ReserveWidgets.ReservationId" class="form-control"/>
+                    </div>
+                    <input type="hidden" id="ReserveWidgetsId" asp-for="ReserveWidgets.WidgetId"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Reserve</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<template id="FulfillReservationRow">
+    <div class="mb-2 d-flex"><span class="requester"></span>(<span class="count"></span>)<button type="submit" asp-page-handler="FulfillReservation" asp-route-reservationId="RID" class="ms-auto btn btn-primary btn-sm">Fulfill</button></div>
+</template>
+
+<form method="post">
+    <input type="hidden" asp-for="FulfillReservation.WidgetId" id="FulfillReservationId"/>
+    <div class="modal fade" id="FulfillReservationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Fulfill reservation for <span id="FulfillReservationName">WIDGET</span></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -123,16 +179,38 @@
 <h2>Widgets</h2>
 @if (Model.Widgets.Any())
 {
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Widget Name</th>
+            <th>Quantity on Hand</th>
+            <th>Quantity Reserved</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+                @foreach (var widget in Model.Widgets.OrderBy(w => w.Name))
+                {
+                    <tr data-widget-id="@widget.WidgetId" data-widget-name="@widget.Name" class="mb-2">
+                        <td>@widget.Name</td>
+                        <td>@widget.Inventory</td>
+                        <td>@widget.Reserved @if (widget.Reserved > widget.Inventory)
+                                             {
+                                                 <i class="fa-regular fa-exclamation-triangle text-danger ms-2" title="Overcommitted"></i>
+                                             }</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#SellWidgetsModal">Sell</button>
+                            <button class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#BuyWidgetsModal">Buy</button>
+                            <button class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#ReserveWidgetsModal">Reserve</button>
+                            <button class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#FulfillReservationModal">Fulfill</button>
+                            <button class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#RemoveWidgetModal">Remove</button>
+                        </td>
+                    </tr>
+                }
+
+        </tbody>
+    </table>
     <ul class="mb-4">
-        @foreach (var widget in Model.Widgets.OrderBy(w => w.Name))
-        {
-            <li data-widget-id="@widget.WidgetId" data-widget-name="@widget.Name" class="mb-2">
-                @widget.Name (@widget.Inventory in stock)
-                <button class="btn btn-primary btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#SellWidgetsModal">Sell</button>
-                <button class="btn btn-primary btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#BuyWidgetsModal">Buy</button>
-                <button class="btn btn-danger btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#RemoveWidgetModal">Remove</button>
-            </li>
-        }
     </ul>
 }
 
@@ -142,31 +220,70 @@
 @section scripts {
     <script>
     $(() => {
+        let fulfillTemplate = document.getElementById('FulfillReservationRow');
+        
         $('#SellWidgetsModal').on('show.bs.modal', evt => {
             let $related = $(evt.relatedTarget);
-            let $li = $related.closest('li');
-            let widgetId = $li.data('widgetId');
-            let widgetName = $li.data('widgetName');
+            let $tr = $related.closest('tr');
+            let widgetId = $tr.data('widgetId');
+            let widgetName = $tr.data('widgetName');
             $('#SellWidgetsId').val(widgetId);
             $('#SellWidgetsName').text(widgetName);
         })
         
         $('#BuyWidgetsModal').on('show.bs.modal', evt => {
             let $related = $(evt.relatedTarget);
-            let $li = $related.closest('li');
-            let widgetId = $li.data('widgetId');
-            let widgetName = $li.data('widgetName');
+            let $tr = $related.closest('tr');
+            let widgetId = $tr.data('widgetId');
+            let widgetName = $tr.data('widgetName');
             $('#BuyWidgetsId').val(widgetId);
             $('#BuyWidgetsName').text(widgetName);
         })
         
         $('#RemoveWidgetModal').on('show.bs.modal', evt => {
             let $related = $(evt.relatedTarget);
-            let $li = $related.closest('li');
-            let widgetId = $li.data('widgetId');
-            let widgetName = $li.data('widgetName');
+            let $tr = $related.closest('tr');
+            let widgetId = $tr.data('widgetId');
+            let widgetName = $tr.data('widgetName');
             $('#RemoveWidgetId').val(widgetId);
             $('#RemoveWidgetName').text(widgetName);
+        })
+        
+        $('#ReserveWidgetsModal').on('show.bs.modal', evt => {
+            let $related = $(evt.relatedTarget);
+            let $tr = $related.closest('tr');
+            let widgetId = $tr.data('widgetId');
+            let widgetName = $tr.data('widgetName');
+            $('#ReserveWidgetsId').val(widgetId);
+            $('#ReserveWidgetsName').text(widgetName);
+        })
+        
+        $('#FulfillReservationModal').on('show.bs.modal', evt => {
+            let $related = $(evt.relatedTarget);
+            let $tr = $related.closest('tr');
+            let widgetId = $tr.data('widgetId');
+            let widgetName = $tr.data('widgetName');
+            $('#FulfillReservationId').val(widgetId);
+            $('#FulfillReservationName').text(widgetName);
+            
+            $.ajax({
+            url: `/api/widget/${widgetId}`,
+            method: 'get'
+            }).done(data => {
+                $('#FulfillReservationModal .modal-body').empty();
+                let modalBody = document.querySelector('#FulfillReservationModal .modal-body');
+                for (let reservation of data.reservations) {
+                    let clone = fulfillTemplate.content.cloneNode(true);
+                    let $requester = $(clone.querySelector('.requester'));
+                    let $count = $(clone.querySelector('.count'));
+                    let $button = $(clone.querySelector('button'));
+                    $requester.text(reservation.reservedFor);
+                    $count.text(reservation.requested);
+                    let action = $button.attr('formaction');
+                    $button.attr('formaction', action.replace('RID', reservation.reservationId));
+                    modalBody.appendChild(clone);
+                }
+            });
         })
     });
     </script>

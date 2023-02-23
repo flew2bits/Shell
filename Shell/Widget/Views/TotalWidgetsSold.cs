@@ -11,4 +11,7 @@ public class TotalWidgetsSoldProjection : SingleStreamAggregation<TotalWidgetsSo
 
     public TotalWidgetsSold Apply(WidgetsSold sold, TotalWidgetsSold state) =>
         state with { TotalCount = state.TotalCount + sold.Sold };
+
+    public TotalWidgetsSold Apply(ReservationFulfilled fulfilled, TotalWidgetsSold state) =>
+        state with { TotalCount = state.TotalCount + fulfilled.Quantity };
 }

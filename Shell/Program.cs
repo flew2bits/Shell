@@ -25,4 +25,6 @@ var app = builder.Build();
 app.UseStaticFiles();
 app.MapRazorPages();
 
+app.MapWidgetApi();
+
 app.Run();

@@ -23,6 +23,9 @@ public class Index : PageModel
     [BindProperty] public AddWidgetRequest AddWidget { get; set; } = new("", 0);
     [BindProperty] public SellWidgetRequest SellWidgets { get; set; } = new(Guid.Empty, 0);
     [BindProperty] public BuyWidgetsRequest BuyWidgets { get; set; } = new(Guid.Empty, 0);
+    [BindProperty] public ReserveWidgetsRequest ReserveWidgets { get; set; } = new(Guid.Empty, 0, "", "");
+
+    [BindProperty] public FulfillReservationRequest FulfillReservation { get; set; } = new(Guid.Empty);
 
     public async Task OnGet([FromServices] GetAll<AvailableWidget> getAvailableWidgets,
         [FromServices] GetAll<TotalWidgetsSold> getSales)
@@ -51,6 +54,33 @@ public class Index : PageModel
         return RedirectToPage();
     }
 
+    public async Task<IActionResult> OnPostReserveWidgets()
+    {
+        if (string.IsNullOrEmpty(ReserveWidgets.ReservationId) || string.IsNullOrEmpty(ReserveWidgets.ReservedFor))
+            return RedirectToPage();
+
+        var(_, events) = await _commandHandler.HandleCommand(ReserveWidgets.WidgetId,
+            new ReserveWidgets(ReserveWidgets.ReservedFor, ReserveWidgets.ReservationId, ReserveWidgets.Reserve));
+
+        if (events.SingleOrDefault() is ReservationNotAdded fail)
+        {
+            TempData["Message"] = $"Reservation failed: {fail.Reason}";
+        }
+
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostFulfillReservation(string reservationId)
+    {
+        var (_, events) = await _commandHandler.HandleCommand(FulfillReservation.WidgetId,
+            new FulfillReservation(reservationId));
+
+        if (events.SingleOrDefault() is ReservationNotFulfilled fail)
+            TempData["Message"] = $"Could not fulfill: {fail.Reason}";
+
+        return RedirectToPage();
+    }
+    
     public async Task<IActionResult> OnPostRemoveWidgetFromInventory(Guid widgetId)
     {
         var (_, events) = await _commandHandler.HandleCommand(widgetId, new RemoveWidgetFromInventory());
@@ -64,4 +94,8 @@ public class Index : PageModel
     public record SellWidgetRequest(Guid WidgetId, uint Sell);
 
     public record BuyWidgetsRequest(Guid WidgetId, uint Buy);
+
+    public record ReserveWidgetsRequest(Guid WidgetId, uint Reserve, string ReservedFor, string ReservationId);
+
+    public record FulfillReservationRequest(Guid WidgetId);
 }
