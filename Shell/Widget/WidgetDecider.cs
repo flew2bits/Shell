@@ -20,10 +20,12 @@ public static class WidgetDecider
                 : NoEvents,
             SellWidgets sell => sell.WidgetCount <= state.Count && !state.IsArchived
                 ? Events(new WidgetsSold(state.WidgetId, sell.WidgetCount, state.Count - sell.WidgetCount))
-                : Events(new WidgetsNotSold(state.WidgetId, "Purchase amount exceeds inventory")),
-            RemoveWidgetFromInventory => state.IsArchived
-                ? NoEvents
-                : Events(new WidgetRemovedFromInventory(state.WidgetId)),
+                : Events(new WidgetsNotSold(state.WidgetId, "Sell quantity exceeds inventory")),
+            RemoveWidgetFromInventory => state is { Count: 0, IsArchived: false }
+                ? Events(new WidgetRemovedFromInventory(state.WidgetId))
+                : state.Count != 0 
+                    ? Events(new WidgetNotRemovedFromInventory(state.WidgetId, "Cannot remove when inventory is on hand"))
+                    : NoEvents,
             _ => NoEvents
         };
 

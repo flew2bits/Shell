@@ -7,6 +7,4 @@ mkdir c:\temp\$LowerAppName\postgres -f
 
 dotnet dev-certs https -ep c:\temp\$LowerAppName\localhost.pfx -p SECURE
 
-cd $AppName
-docker compose up -d
-cd ..
+docker compose -f $AppName\docker-compose.yml up -d

@@ -1,3 +1,4 @@
+using FluentValidation;
 using Marten;
 using Marten.Services.Json;
 using Shell.Widget;
@@ -15,6 +16,8 @@ builder.Services.AddMarten(config =>
     config.AutoCreateSchemaObjects = AutoCreate.All;
 });
 builder.Services.AddRazorPages();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 builder.Services.AddWidget();
 
 var app = builder.Build();

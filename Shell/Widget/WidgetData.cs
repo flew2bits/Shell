@@ -10,10 +10,10 @@ public class WidgetData : MartenData<Widget>
     {
     }
     
-    public async Task<IEnumerable<AvailableWidgets>> GetAvailableWidgets()
+    public async Task<IEnumerable<AvailableWidget>> GetAvailableWidgets()
     {
         await using var session = Store.QuerySession();
-        return await session.Query<AvailableWidgets>().ToListAsync();
+        return await session.Query<AvailableWidget>().ToListAsync();
     }
     
     public async Task<IEnumerable<TotalWidgetsSold>> GetSellCounts()

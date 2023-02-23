@@ -17,14 +17,14 @@ public static class Configuration
 
         // Everything below is related to projections
             
-            .AddTransient<GetAll<AvailableWidgets>>(svc => svc.GetRequiredService<WidgetData>().GetAvailableWidgets)
+            .AddTransient<GetAll<AvailableWidget>>(svc => svc.GetRequiredService<WidgetData>().GetAvailableWidgets)
             .AddTransient<GetAll<TotalWidgetsSold>>(svc => svc.GetRequiredService<WidgetData>().GetSellCounts)
             .ConfigureMarten(config =>
             {
-                config.Projections.Add<AvailableWidgetsProjection>(ProjectionLifecycle.Inline);
+                config.Projections.Add<AvailableWidgetProjection>(ProjectionLifecycle.Inline);
                 config.Projections.Add<TotalWidgetsSoldProjection>(ProjectionLifecycle.Inline);
 
-                config.Schema.For<AvailableWidgets>().Identity(aw => aw.WidgetId);
+                config.Schema.For<AvailableWidget>().Identity(aw => aw.WidgetId);
                 config.Schema.For<TotalWidgetsSold>().Identity(tws => tws.WidgetId);
             })
         ;
