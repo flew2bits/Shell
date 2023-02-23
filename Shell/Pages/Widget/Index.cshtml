@@ -9,6 +9,21 @@
     <div class="alert alert-danger">@TempData["Message"]</div>
 }
 
+<div class="offcanvas offcanvas-start" tabindex="-1" id="SalesDetails">
+    <div class="offcanvas-header">
+        <h3>Total Sales</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul>
+            @foreach (var saleDetail in Model.Sales)
+            {
+                <li>@saleDetail.Name: @saleDetail.TotalCount sold</li>
+            }
+        </ul>
+    </div>
+</div>
+
 <form method="post" asp-page-handler="AddWidget">
     <div class="modal fade" id="AddWidgetModal">
         <div class="modal-dialog">
@@ -122,6 +137,7 @@
 }
 
 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#AddWidgetModal">Add a Widget</button>
+<button class="btn btn-secondary btn-sm ms-4" data-bs-toggle="offcanvas" data-bs-target="#SalesDetails">See Sales</button>
 
 @section scripts {
     <script>

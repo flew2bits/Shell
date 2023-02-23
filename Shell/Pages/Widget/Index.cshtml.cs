@@ -17,14 +17,18 @@ public class Index : PageModel
     }
 
     public AvailableWidget[] Widgets { get; set; } = Array.Empty<AvailableWidget>();
-    
+
+    public TotalWidgetsSold[] Sales { get; set; } = Array.Empty<TotalWidgetsSold>();
+
     [BindProperty] public AddWidgetRequest AddWidget { get; set; } = new("", 0);
     [BindProperty] public SellWidgetRequest SellWidgets { get; set; } = new(Guid.Empty, 0);
     [BindProperty] public BuyWidgetsRequest BuyWidgets { get; set; } = new(Guid.Empty, 0);
 
-    public async Task OnGet([FromServices] GetAll<AvailableWidget> getAvailableWidgets)
+    public async Task OnGet([FromServices] GetAll<AvailableWidget> getAvailableWidgets,
+        [FromServices] GetAll<TotalWidgetsSold> getSales)
     {
         Widgets = (await getAvailableWidgets()).ToArray();
+        Sales = (await getSales()).ToArray();
     }
 
     public async Task<IActionResult> OnPostAddWidget()
