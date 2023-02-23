@@ -16,7 +16,7 @@
     </div>
     <div class="offcanvas-body">
         <ul>
-            @foreach (var saleDetail in Model.Sales)
+            @foreach (var saleDetail in Model.Sales.OrderBy(s => s.Name))
             {
                 <li>@saleDetail.Name: @saleDetail.TotalCount sold</li>
             }
