@@ -46,5 +46,5 @@ public static class WidgetDecider
 
     private static bool IsCreator(object command) => command is AddWidget;
 
-    public static readonly Decider<Guid, Widget> Decider = new(Decide, Evolve, InitialState, IsCreator, IsCreator);
+    public static readonly Decider<Guid, Widget> Decider = new(Decide, Evolve, InitialState, IsTerminal, IsCreator);
 }
