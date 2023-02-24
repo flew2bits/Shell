@@ -85,7 +85,9 @@ This entity does not use an Archiver.
 To execute a command, inject a `WidgetCommandHandler` into your
 page (or page handler), controller (or controller action), or
 minimal API, and call the `Handle` method passing the identity
-(usually a `Guid`) and an instance of the desired command.
+(a `Guid`) and an instance of the desired command.
+
+*All of the work below happens in the base class.*
 
 The handler first trys to load the entity using the `Loader` from the given
 identity and checks if the command being executed is an initiator/creator.
