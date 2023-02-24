@@ -22,8 +22,8 @@ public static class WidgetDecider
                     state.Count + amount.WidgetCount))
                 : NoEvents,
 
-            SellWidgets sell => sell.WidgetCount <= state.Count - state.Reservations.Values.Sum(r => r.RequestAmount) &&
-                                !state.IsArchived
+            SellWidgets sell => state.IsArchived ? NoEvents :
+                    sell.WidgetCount <= state.Count - state.Reservations.Values.Sum(r => r.RequestAmount)
                 ? Events(new WidgetsSold(state.WidgetId, sell.WidgetCount, state.Count - sell.WidgetCount))
                 : Events(new WidgetsNotSold(state.WidgetId, "Sell quantity exceeds unreserved inventory")),
 
