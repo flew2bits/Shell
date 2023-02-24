@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Marten;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shell.Widget;
 using Shell.Widget.Commands;
@@ -36,6 +37,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnPostAddWidget()
     {
+        var x = FunctionalCore.Widget.Command.NewAddWidget(AddWidget.Name, AddWidget.InitialInventory);
         await _commandHandler.HandleCommand(Guid.NewGuid(), new AddWidget(AddWidget.Name, AddWidget.InitialInventory));
         return RedirectToPage();
     }

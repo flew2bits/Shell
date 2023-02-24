@@ -19,4 +19,8 @@
       <PackageReference Include="Marten.AspNetCore" Version="5.11.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FunctionalCore\FunctionalCore.fsproj" />
+    </ItemGroup>
+
 </Project>

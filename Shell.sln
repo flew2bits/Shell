@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell", "Shell\Shell.csproj", "{571F4F60-A136-4AB7-BA44-E760FB65ED7F}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FunctionalCore", "FunctionalCore\FunctionalCore.fsproj", "{AC2352A4-307A-4D1D-8874-F66F588ACB16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{571F4F60-A136-4AB7-BA44-E760FB65ED7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{571F4F60-A136-4AB7-BA44-E760FB65ED7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{571F4F60-A136-4AB7-BA44-E760FB65ED7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC2352A4-307A-4D1D-8874-F66F588ACB16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC2352A4-307A-4D1D-8874-F66F588ACB16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC2352A4-307A-4D1D-8874-F66F588ACB16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC2352A4-307A-4D1D-8874-F66F588ACB16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
