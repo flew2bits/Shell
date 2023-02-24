@@ -1,5 +1,5 @@
 ﻿$AppName = Split-Path -Path (Get-Location) -Leaf
-$AppNameSquished = $AppName.Trim().Replace(" ", "")
+$AppNameSquished = $AppName.Trim().Replace(" ", "").Replace("-", "_")
 $LowerAppName = $AppNameSquished.ToLower()
 
 Rename-Item Shell.sln "${AppName}.sln"
