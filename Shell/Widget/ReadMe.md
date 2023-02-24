@@ -139,7 +139,7 @@ B2 -- no --> D2>No Events]
 
 A3[SellWidgets] --> E3{archived}
 E3 -- yes --> F3>No Events]
-E3 -- no --> B3{stock>amt &\n!archived}
+E3 -- no --> B3{stock>amt}
 B3 -- yes --> C3(WidgetsSold)
 B3 -- no --> D3(WidgetsNotSold)
 
