@@ -166,7 +166,7 @@ D6 -- no --> F6(WidgetNotRemovedFromInventory)
 ```mermaid
 flowchart LR
 A1(WidgetAdded) --> B1[Count=.InitialStock\nWidgetName=.Name]
-A2(WidgetSold) --> B2[Count=.InventoryRemaining]
+A2(WidgetsSold) --> B2[Count=.InventoryRemaining]
 A3(WidgetStockReplenished) --> B3[Count=.CurrentInventory]
 A4(WidgetRemovedFromInventory) --> B4[IsArchived=true]
 A5(ReservationAdded) --> B5[append new reservation]
