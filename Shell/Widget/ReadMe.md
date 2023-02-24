@@ -135,7 +135,7 @@ A2[PurchaseNewStock] --> B2{amt>0 &\n!archived}
 B2 -- yes --> C2(WidgetStockReplenished)
 B2 -- no --> D2>No Events]
 
-A3[SellWidgets] --> E3{IsArchived}
+A3[SellWidgets] --> E3{archived}
 E3 -- yes --> F3>No Events]
 E3 -- no --> B3{stock>amt &\n!archived}
 B3 -- yes --> C3(WidgetsSold)
