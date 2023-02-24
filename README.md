@@ -20,8 +20,7 @@ At this point, you will have a functional program with a sample entity, Widget. 
 http://localhost:8080 or https://localhost:8443. If you are going to use authorization, you'll need to set that up manually, and it will require the 
 use of the https endpoint.
 
-Once you have an understanding of how to create your own entity, you can delete the "Widget" and "Pages/Widget" folders, and remove `builder.Services.AddWidget()`  
-and `app.MapWidgetApi()` from program.cs.
+Once you have an understanding of how to create your own entity, you can delete the "Widget" and "Pages/Widget" folders, and remove `builder.Services.AddWidget()` and `app.MapWidgetApi()` from program.cs.
 
 ## Allow PowerShell to run scripts
 
