@@ -11,55 +11,7 @@ method should be updated to check the state and command to
 generate the new events; the `Decider.Evolve` method should be
 updated to take the events and transition the state.
 
-### Business logic implemented
 
-#### Decide
-
-```mermaid
-flowchart LR
-A1[AddWidget] --> B1(WidgetAdded)
-
-A2[PurchaseNewStock] --> B2{amt>0 &\n!archived}
-B2 -- yes --> C2(WidgetStockReplenished)
-B2 -- no --> D2>No Events]
-
-A3[SellWidgets] --> B3{stock>amt &\n!archived}
-B3 -- yes --> C3(WidgetsSold)
-B3 -- no --> D3(WidgetsNotSold)
-
-A4[ReserveWidgets] --> B4{archived}
-B4 -- yes --> C4>No Events]
-B4 -- no --> D4{reserve\nid exists}
-D4 -- yes --> E4(ReservationNotAdded)
-D4 -- no --> F4(ReservationAdded)
-
-A5[FulfillReservation] --> B5{archived}
-B5 -- yes --> C5>No Events]
-B5 -- no --> D5{reservation\nexists}
-D5 -- no --> E5(ReservationNotFulfilled)
-D5 -- yes --> F5{needed<=stock}
-F5 --> no --> G5(ReservationNotFulfilled)
-F5 --> yes --> H5(ReservationFulfilled)
-
-A6[RemoveWidgetFromInventory] --> B6{archived}
-B6 -- yes --> C6>No Events]
-B6 -- no --> D6{stock=0 &\nreserve=0}
-D6 -- yes --> E6(WidgetRemovedFromInventory)
-D6 -- no --> F6(WidgetNotRemovedFromInventory)
-```
-
-#### Evolve
-```mermaid
-flowchart LR
-A1(WidgetAdded) --> B1[Count=.InitialStock\nWidgetName=.Name]
-A2(WidgetSold) --> B2[Count=.InventoryRemaining]
-A3(WidgetStockReplenished) --> B3[Count=.CurrentInventory]
-A4(WidgetRemovedFromInventory) --> B4[IsArchived=true]
-A5(ReservationAdded) --> B5[append new reservation]
-A6(ReservationFulfilled) --> B6[remove matching reservation\nCount=.CurrentInventory]
-A7(WidgetsNotSold) --> B7>No Change]
-A8(ReservationNotFulfilled) --> B8>No Change] 
-```
 
 ## Views/
 Each view is made up of two parts -- the view object itself, which
@@ -170,3 +122,53 @@ the evolver, returning a new state.
 
 This class represents the *Functional Core* of the entity. All of the
 methods defined here are Pure functions.
+
+### Business logic implemented
+
+#### Decide
+
+```mermaid
+flowchart LR
+A1[AddWidget] --> B1(WidgetAdded)
+
+A2[PurchaseNewStock] --> B2{amt>0 &\n!archived}
+B2 -- yes --> C2(WidgetStockReplenished)
+B2 -- no --> D2>No Events]
+
+A3[SellWidgets] --> B3{stock>amt &\n!archived}
+B3 -- yes --> C3(WidgetsSold)
+B3 -- no --> D3(WidgetsNotSold)
+
+A4[ReserveWidgets] --> B4{archived}
+B4 -- yes --> C4>No Events]
+B4 -- no --> D4{reserve\nid exists}
+D4 -- yes --> E4(ReservationNotAdded)
+D4 -- no --> F4(ReservationAdded)
+
+A5[FulfillReservation] --> B5{archived}
+B5 -- yes --> C5>No Events]
+B5 -- no --> D5{reservation\nexists}
+D5 -- no --> E5(ReservationNotFulfilled)
+D5 -- yes --> F5{needed<=stock}
+F5 --> no --> G5(ReservationNotFulfilled)
+F5 --> yes --> H5(ReservationFulfilled)
+
+A6[RemoveWidgetFromInventory] --> B6{archived}
+B6 -- yes --> C6>No Events]
+B6 -- no --> D6{stock=0 &\nreserve=0}
+D6 -- yes --> E6(WidgetRemovedFromInventory)
+D6 -- no --> F6(WidgetNotRemovedFromInventory)
+```
+
+#### Evolve
+```mermaid
+flowchart LR
+A1(WidgetAdded) --> B1[Count=.InitialStock\nWidgetName=.Name]
+A2(WidgetSold) --> B2[Count=.InventoryRemaining]
+A3(WidgetStockReplenished) --> B3[Count=.CurrentInventory]
+A4(WidgetRemovedFromInventory) --> B4[IsArchived=true]
+A5(ReservationAdded) --> B5[append new reservation]
+A6(ReservationFulfilled) --> B6[remove matching reservation\nCount=.CurrentInventory]
+A7(WidgetsNotSold) --> B7>No Change]
+A8(ReservationNotFulfilled) --> B8>No Change] 
+```
