@@ -152,8 +152,8 @@ B5 -- yes --> C5>No Events]
 B5 -- no --> D5{reservation\nexists}
 D5 -- no --> E5(ReservationNotFulfilled)
 D5 -- yes --> F5{needed<=stock}
-F5 --> no --> G5(ReservationNotFulfilled)
-F5 --> yes --> H5(ReservationFulfilled)
+F5 -- no --> G5(ReservationNotFulfilled)
+F5 -- yes --> H5(ReservationFulfilled)
 
 A6[RemoveWidgetFromInventory] --> B6{archived}
 B6 -- yes --> C6>No Events]
